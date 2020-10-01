@@ -1,6 +1,6 @@
 pipeline {
     environment {
-        registry = "https://hub.docker.com/repository/docker/knightecab/timer_app_docker"
+        registry = "knightecab/timer_app_docker"
         registryCredential = 'dock_jen'
         dockerImage = ''
     }
