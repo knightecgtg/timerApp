@@ -35,22 +35,6 @@ pipeline {
                  }
                 }
 
-          stage('Gradle clean'){
-                        steps {
-                            sh "docker run --rm -v "$PWD":/home/gradle/ -w /home/gradle/timerapp $registry:$BUILD_NUMBER gradle -PdisablePreDex clean"
-                         }
-                        }
- stage('Gradle lint'){
-                        steps {
-                            sh "docker run --rm -v "$PWD":/home/gradle/ -w /home/gradle/timerapp $registry:$BUILD_NUMBER gradle -PdisablePreDex lint"
-                         }
-                        }
-
-                        stage('Gradle build'){
-                                                steps {
-                                                    sh "$docker run --rm -v "$PWD":/home/gradle/ -w /home/gradle/timerapp $registry:$BUILD_NUMBER gradle -PdisablePreDex assembleDebug"
-                                                 }
-                                                }
         stage('Deploy in container'){
         steps {
             sh "docker run --publish 8000:8080 --detach --name timercontainer $registry:$BUILD_NUMBER"
