@@ -1,24 +1,36 @@
-// Jenkinsfile
-//Adding a comment to check webhooks on github, should be removed later on
 pipeline {
-  // Assign to docker slave(s) label, could also be 'any'
-  agent {
-    label 'docker'
-  }
-
-  stages {
-    stage('Docker node test') {
-      agent {
-        docker {
-          // Set both label and image
-          label 'latest'
-          image 'knightecab/timerapp:latest'
-        }
-      }
-      steps {
-        // Steps run in node:7-alpine docker container on docker slave
-        sh 'node --version'
-      }
+    environment {
+        registry = "https://hub.docker.com/repository/docker/knightecab/timer_app_docker"
+        registryCredential = 'dock_jen'
+        dockerImage = ''
     }
-  }
+    agent any
+    stages {
+        stage('Cloning our Git') {
+            steps {
+                git 'https://github.com/knightecgtg/timerApp.git'
+            }
+        }
+        stage('Building our image') {
+            steps {
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
+            }
+        }
+        stage('Deploy our image') {
+            steps {
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        stage('Cleaning up') {
+            steps {
+                sh "docker rmi $registry:$BUILD_NUMBER"
+            }
+        }
+    }
 }
