@@ -6,6 +6,9 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
 
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
     defaultConfig {
         applicationId "com.example.androidtutorialfragment"
         minSdkVersion 16
