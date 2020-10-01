@@ -29,6 +29,11 @@ pipeline {
                 }
             }
         }
+        stage('Deploy in container'){
+        steps {
+            sh "docker run --publish 8000:8080 --detach --name timercontainer $registry:$BUILD_NUMBER"
+         }
+        }
         stage('Cleaning up') {
             steps {
                 sh "docker rmi $registry:$BUILD_NUMBER"
