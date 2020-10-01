@@ -1,5 +1,5 @@
 // Jenkinsfile
-
+//Adding a comment to check webhooks on github, should be removed later on
 pipeline {
   // Assign to docker slave(s) label, could also be 'any'
   agent {
