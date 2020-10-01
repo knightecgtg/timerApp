@@ -35,11 +35,11 @@ pipeline {
                  }
                 }
 
-        stage('Deploy in container'){
-        steps {
-            sh "docker run --publish 8000:8080 --detach --name timercontainer $registry:$BUILD_NUMBER"
-         }
-        }
+       stage('Gradle clean'){
+                             steps {
+                                 sh "docker run --rm -v "$PWD":/home/gradle/ -w /home/gradle/timerapp $registry:$BUILD_NUMBER gradle -PdisablePreDex clean"
+                              }
+                             }
         stage('Cleaning up') {
             steps {
                 sh "docker rmi $registry:$BUILD_NUMBER"
