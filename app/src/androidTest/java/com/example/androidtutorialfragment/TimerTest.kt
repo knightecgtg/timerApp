@@ -20,6 +20,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+//This test was created using espresso record
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class TimerTest {
